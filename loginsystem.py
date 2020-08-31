@@ -20,7 +20,7 @@ def register():
 	password_register_input = input("Password: ")
 	password_register_confirm_input = input("Password confirm: ")
 
-	#Check if password length is longer than 6 characters.
+	#Check if password length is longer than xy characters.
 	if len(password_register_input) >= min_password_length:
 
 		#Check if username has only alphanumeric characters
@@ -52,27 +52,27 @@ def register():
 							(username_register_input, hashed_registered_password))
 						conn.commit()
 
-						#Visual stuff
+						#Registration Success message.
 						print("------------------------")
 						print("Registration Successful!")
 						print("------------------------")
 						menu()
 
 					else:
-						#Visual stuff
+						#Error message for username already taken.
 						print("------------------------")
 						print("Registration failed!\nUsername already has been taken.")
 						print("------------------------")
 						register()
 				else:
-					#Visual stuff
+					#Error message for password and password comfirm don't match.
 					print("------------------------")
 					print("Registration failed!\nPassword didn't match.")
 					print("------------------------")
 					register()
 
 			else:
-				#Visual stuff
+				#Error message for password not alphanumeric.
 				print("------------------------")
 				print("Registration failed!\nYou can only use alphanumeric characters.")
 				print("------------------------")
@@ -80,13 +80,15 @@ def register():
 
 				
 		else:
-			#Visual stuff
+			#Error message for username not alphanumeric.
 			print("------------------------")
 			print("Registration failed!\nYou can only use alphanumeric characters.")
 			print("------------------------")
 			register()
 	
+
 	else:
+		#Error message for password too short.
 		print("------------------------")
 		length_error = "Registration failed!\nPassword has to be longer than {0} characters."
 		print(length_error.format(min_password_length))

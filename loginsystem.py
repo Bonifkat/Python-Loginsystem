@@ -11,6 +11,8 @@ c.execute('CREATE TABLE IF NOT EXISTS userdata(username REAL, password REAL)')
 #registration
 def register():
 
+	min_password_length = 6
+
 	#Visual stuff
 	print("----Registeration----")
 
@@ -18,66 +20,76 @@ def register():
 	password_register_input = input("Password: ")
 	password_register_confirm_input = input("Password confirm: ")
 
-	#Check if username has only alphanumeric characters
-	if username_register_input.isalnum() == True:
+	#Check if password length is longer than 6 characters.
+	if len(password_register_input) >= min_password_length:
 
 		#Check if username has only alphanumeric characters
-		if password_register_input.isalnum() == True:
+		if username_register_input.isalnum() == True:
 
-			#Checks if password and password confirm is the same
-			if password_register_input == password_register_confirm_input:
-				password_to_hash = password_register_confirm_input
+			#Check if username has only alphanumeric characters
+			if password_register_input.isalnum() == True:
 
-				#Password encryption
-				encrypt_password = bcrypt.hashpw(password_to_hash.encode('utf-8'), bcrypt.gensalt())
+				#Checks if password and password confirm is the same
+				if password_register_input == password_register_confirm_input:
+					password_to_hash = password_register_confirm_input
 
-				hashed_registered_password = encrypt_password
-				
-				#Database check for username
-				c.execute("SELECT username FROM userdata WHERE username = ?", (username_register_input,))
+					#Password encryption
+					encrypt_password = bcrypt.hashpw(password_to_hash.encode('utf-8'), bcrypt.gensalt())
 
-				usernames_from_db = 0
-				for checkusername in c.fetchall():
-					usernames_from_db = checkusername[0]
+					hashed_registered_password = encrypt_password
+					
+					#Database check for username
+					c.execute("SELECT username FROM userdata WHERE username = ?", (username_register_input,))
 
-				#Checks if username already exists in the database and if not create user.
-				if usernames_from_db != username_register_input:
-					#Database upload
-					c.execute("INSERT INTO userdata (username, password) VALUES (?, ?)",
-						(username_register_input, hashed_registered_password))
-					conn.commit()
+					usernames_from_db = 0
+					for checkusername in c.fetchall():
+						usernames_from_db = checkusername[0]
 
-					#Visual stuff
-					print("------------------------")
-					print("Registration Successful!")
-					print("------------------------")
-					menu()
+					#Checks if username already exists in the database and if not create user.
+					if usernames_from_db != username_register_input:
+						#Database upload
+						c.execute("INSERT INTO userdata (username, password) VALUES (?, ?)",
+							(username_register_input, hashed_registered_password))
+						conn.commit()
 
+						#Visual stuff
+						print("------------------------")
+						print("Registration Successful!")
+						print("------------------------")
+						menu()
+
+					else:
+						#Visual stuff
+						print("------------------------")
+						print("Registration failed!\nUsername already has been taken.")
+						print("------------------------")
+						register()
 				else:
 					#Visual stuff
 					print("------------------------")
-					print("Registration failed!\nUsername already has been taken.")
+					print("Registration failed!\nPassword didn't match.")
 					print("------------------------")
 					register()
+
 			else:
 				#Visual stuff
 				print("------------------------")
-				print("Registration failed!\nPassword didn't match.")
+				print("Registration failed!\nYou can only use alphanumeric characters.")
 				print("------------------------")
 				register()
 
+				
 		else:
 			#Visual stuff
 			print("------------------------")
 			print("Registration failed!\nYou can only use alphanumeric characters.")
 			print("------------------------")
 			register()
-
-			
+	
 	else:
-		#Visual stuff
 		print("------------------------")
-		print("Registration failed!\nYou can only use alphanumeric characters.")
+		length_error = "Registration failed!\nPassword has to be longer than {0} characters."
+		print(length_error.format(min_password_length))
 		print("------------------------")
 		register()
 

@@ -1,2 +1,13 @@
-data-save-type: MYSQL #SQLITE or MYSQL
+data-save-type: SQLITE #SQLITE or MYSQL
 min-password-length: 6
+
+mysql:
+    host: "192.168.0.102"
+    user: "boni"
+    password: "12345678"
+    database: "userdatabase"
+    
+sqlite: "userdatabase.db"
+
+
+

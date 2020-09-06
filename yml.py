@@ -15,7 +15,6 @@ sqlite_settings = yml_import["sqlite"]
 
 ##################################################
 
-min_password_length = 6
 
 
 

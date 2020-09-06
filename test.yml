@@ -1,4 +1,4 @@
-data-save-type: MYSQL #SQLITE or MYSQL
+data-save-type: SQLITE #SQLITE or MYSQL
 min-password-length: 6
 
 mysql:
